@@ -30,7 +30,7 @@ public class Consultoria {
     }
 
     public void contratar(Desenvolvedor desenvolvedor) {
-        if(vagas >= 1){
+        if(vagas > desenvolvedores.size()){
 
             desenvolvedores.add(desenvolvedor);
 
@@ -94,29 +94,28 @@ public class Consultoria {
 
     public List<Desenvolvedor> buscarPorTecnologia(String tecnologia){
         List<Desenvolvedor> desenvolvedorList = new ArrayList<>();
-        for(Desenvolvedor desenvolvedor : this.desenvolvedores){
-            if (desenvolvedor instanceof DesenvolvedorWeb) {
-                DesenvolvedorWeb devWeb = (DesenvolvedorWeb) desenvolvedor;
-                if ("frontend".equalsIgnoreCase(tecnologia) && devWeb.isFrontEnd()) {
-                    desenvolvedorList.add(devWeb);
-                } else if ("sgbd".equalsIgnoreCase(tecnologia) && devWeb.isSgbd()) {
-                    desenvolvedorList.add(devWeb);
-                } else if ("backend".equalsIgnoreCase(tecnologia) && devWeb.isBackEnd()) {
-                    desenvolvedorList.add(devWeb);
-                }
-            }else if (desenvolvedor instanceof DesenvolvedorMobile) {
-                DesenvolvedorMobile deveMobile = (DesenvolvedorMobile) desenvolvedor;
 
-                if("plataforma".equalsIgnoreCase(tecnologia) && deveMobile.isPlataforma()) {
-                    desenvolvedorList.add(deveMobile);
-                } else if("linguagem".equalsIgnoreCase(tecnologia) && deveMobile.isLinguagem()) {
-                    desenvolvedorList.add(deveMobile);
-                }
-            }
-        }
+      for(Desenvolvedor desenvolvedor : this.desenvolvedores){
+          if(desenvolvedor instanceof DesenvolvedorWeb){
+
+              DesenvolvedorWeb devWeb = (DesenvolvedorWeb) desenvolvedor;
+              if(devWeb.getBackend().equals(tecnologia) || devWeb.getFrontend().equals(tecnologia) || devWeb.getSgbd().equals(tecnologia)){
+                  desenvolvedorList.add(devWeb);
+              }
+
+          } else if(desenvolvedor instanceof DesenvolvedorMobile){
+              DesenvolvedorMobile devMob = (DesenvolvedorMobile) desenvolvedor;
+              if(devMob.getPlataforma().equals(tecnologia) || devMob.getPlataforma().equals(tecnologia)){
+                  desenvolvedorList.add(devMob);
+              }
+          }
+      }
 
         return desenvolvedorList;
     }
+
+
+
 
     public Double getTotalSalariosPorTecnologia(String tecnologia) {
         List<Desenvolvedor> desenvolvedorList = buscarPorTecnologia(tecnologia);
